@@ -48,7 +48,7 @@ export class ContributorsListComponent implements OnInit , OnDestroy{
   getList() {
     this.loading = true
     this.githubSub = this.githubService.users$.pipe(
-      // take(30),
+      take(30),
       catchError((err) => {
         //Catches and handle error state
         //Still allows observable stream to continue emitting
