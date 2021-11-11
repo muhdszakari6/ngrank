@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs';
 })
 export class AppComponent implements OnDestroy {
   loading: boolean; 
-  title = 'atlens-project';
+  title = 'Angularank';
   loaderSubscription: Subscription
 
   constructor(
