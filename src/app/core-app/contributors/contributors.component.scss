@@ -1,0 +1,19 @@
+
+@import "../../../assets/scss/variables.scss";
+
+.card{
+    background-color: $secondary-color;
+    padding: 1.5rem 2.5rem;
+    border-radius: 1rem;
+
+}
+.welcome{
+    margin-bottom: .4rem;
+    color: $white;
+
+}
+.dets{
+    color: #777;
+    margin-bottom: .4rem;
+    color: $white;
+}

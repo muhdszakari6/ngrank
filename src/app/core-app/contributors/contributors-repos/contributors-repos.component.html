@@ -1,0 +1,41 @@
+<app-page-loader *ngIf="loading">
+
+</app-page-loader>
+
+
+<div class="root" *ngIf="!(loading)">
+    <h2 class="welcome">
+        {{( selectedContributors$ | async )?.name}} contributed repos
+    </h2>
+   
+    <div class="flex-vertical">
+
+        <div class="custom-scroll-bar" [style.height.px]="innerHeight">
+
+
+            <app-empty-state class="image" *ngIf="(list.length === 0) && !tableError">
+
+            </app-empty-state>
+
+            <app-error-state (retry)="getList()" *ngIf="tableError" class="image">
+            </app-error-state>
+
+            <table *ngIf="!(list.length === 0) && !tableError" 
+                class="full-width" mat-table [dataSource]="listData">
+                <ng-container matColumnDef="full_name">
+                    <th mat-header-cell   *matHeaderCellDef> Repo </th>
+                    <td mat-cell *matCellDef="let element"> {{element.full_name}} </td>
+                </ng-container>
+              
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                <tr mat-row (click)="rowClicked(row.full_name)" *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+<mat-paginator [ngClass]="{'hideElement': list.length == 0 || loading }" #paginator [pageIndex]="0" [pageSize]="200"
+    [length]="count" [pageSizeOptions]="[100, 200, 500,1000]" showFirstLastButtons>
+</mat-paginator>

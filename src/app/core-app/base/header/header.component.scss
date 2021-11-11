@@ -1,0 +1,167 @@
+@import "../../../../assets/scss/mixin.scss";
+@import "../../../../assets/scss/variables.scss";
+
+
+
+.appbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    z-index: 100;
+    color: $primary-color;
+    background-color: #fff;
+    padding: 1rem 3.5rem;
+    border-bottom: 1px solid $border-color;
+    padding-bottom: 1rem;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
+    animation: stickAppbar 1s;
+
+
+
+    @include respond(phone) {
+        justify-content: flex-start;
+    }
+
+    &__nav {
+        margin-left: auto;
+        margin-right: 7rem;
+        @include respond(phone) {
+            // display: none;
+        }
+    }
+
+    &__list {
+        display: flex;
+    }
+}
+
+    .mat-icon-15{
+        font-size:1.5rem;
+        height: 1.5rem!important;
+        width: 1.5rem!important;
+        line-height: 1.5rem;
+    }
+
+
+
+
+@keyframes stickAppbar {
+    0% {
+        transform-origin: top;
+        transform: translateY(-7.5rem);
+    }
+    100% {
+        transform: translateY(1);
+    }
+}
+
+a.link {
+    display: block;
+    color: #000;
+    font-size: 1.4rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.3s;
+    padding: 0.8rem;
+    padding-right: 0;
+    text-align: center;
+
+    cursor: pointer;
+
+    @include respond(phone) {
+        width: 95%;
+    }
+
+    &::after {
+        position: absolute;
+        content: "";
+        transform: scaleX(0);
+        height: 2px;
+        width: 50%;
+        border-radius: 100px;
+        background-color: currentColor;
+        right: 0;
+        bottom: 0;
+        transition: all 0.3s;
+        transform-origin: right;
+
+        @include respond(phone) {
+            transform-origin: right;
+        }
+    }
+    
+    &:hover {
+        transform: scale(1.1);
+    }
+
+    &:hover::after {
+        transform: scaleX(1);
+    }
+   
+
+    &:active {
+        transform: scale(1.1);
+    }
+}
+
+.active-link {
+    transform: scale(1) !important ;
+    width: 100% !important;
+
+
+    &::after {
+        transform: scaleX(1) !important ;
+        background-color: $primary-color !important;
+
+    }
+    
+}
+
+.logoText {
+    color: currentColor;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 0;
+    @include respond(tab-port) {
+        display: flex;
+        align-self: center;
+    }
+}
+
+.iconlink {
+    text-decoration: none;
+    color: inherit;
+}
+
+.root {
+    height: 300vh;
+    background-color: $light-background;
+}
+
+.toolbar_actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    margin-right: 5rem;
+
+}
+
+
+.item {
+    position: relative;
+    display: inline-block;
+    padding: 0rem 0.5rem;
+    margin: 0rem 1.5rem;
+    display: flex;
+    align-items: center;
+
+}
+
+.img{
+    width: 30px;
+    height: 30px;
+}

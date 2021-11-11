@@ -1,0 +1,57 @@
+
+<ng-template #loadingOrError>
+
+    <app-error-state  *ngIf="errorMessage" >
+    </app-error-state>
+
+    <app-page-loader *ngIf="!errorMessage">
+
+    </app-page-loader>
+</ng-template>
+
+
+<div class="root" *ngIf="selectedRepo$ | async as repo; else loadingOrError">
+    <div class="header flex-el">
+        <button (click)="goBack()" matTooltip="go back" mat-icon-button><mat-icon>arrow_back</mat-icon></button>
+        <h2 class="page-title">
+            Repositories Details
+        </h2>
+    </div>
+    <div class="card">
+        <h2 class="welcome">
+            {{repo.full_name}}
+        </h2>
+        <div class="flex-el">
+            <p class="label">Watchers:</p>
+            <p class="dets">
+                {{repo.watchers ? repo.watchers : "No watchers available"}}
+            </p>
+        </div>
+        <div class="flex-el">
+            <p class="label">Star Gazers:</p>
+            <p class="dets">
+                {{repo.stargazers_count ? repo.stargazers_count : "No stargazers_count available"}}
+            </p>
+        </div>
+        <div class="flex-el">
+            <p class="label">Date created:</p>
+            <p class="dets">
+                {{repo.created_at ? (repo.created_at | date) : "No date available"}}
+            </p>
+        </div>
+        <div class="flex-el">
+            <p class="label">Last updated:</p>
+            <p class="dets">
+                {{repo.updated_at ? (repo.updated_at | date) : "No update available"}}
+            </p>
+        </div>
+       
+
+    </div>
+
+
+</div>
+
+<app-repo-list *ngIf="selectedRepo$ | async as repo; else loadingOrError">
+    
+</app-repo-list>

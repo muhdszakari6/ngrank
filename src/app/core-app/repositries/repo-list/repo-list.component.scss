@@ -1,0 +1,22 @@
+@import "../../../../assets/scss/variables.scss";
+
+.root {
+    margin-top: 2rem;
+    background-color: #fff;
+}
+
+.hideElement {
+    visibility: hidden;
+}
+table {
+    width: 100% !important;
+}
+
+.img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid $primary-color;
+    margin: 5px;
+}
+

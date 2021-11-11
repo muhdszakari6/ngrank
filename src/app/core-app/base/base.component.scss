@@ -1,0 +1,15 @@
+@import "../../../assets/scss/variables.scss";
+@import "../../../assets/scss/mixin.scss";
+
+.root {
+    background-color: $root-background;
+    min-height: calc(100vh - 9rem);
+    margin-top: 0rem;
+    padding: 2rem 9rem;
+    padding-top: 7rem;
+
+    @include respond(phone) {
+        padding: 2rem;
+        padding-top: 7rem;
+    }
+}

@@ -1,0 +1,60 @@
+<app-page-loader *ngIf="loading">
+
+</app-page-loader>
+
+
+<div class="root" *ngIf="!(loading)">
+    <div class="flex-vertical">
+
+        <div class="custom-scroll-bar" [style.height.px]="innerHeight">
+
+
+            <app-empty-state class="image" *ngIf="(list.length === 0) && !tableError">
+
+            </app-empty-state>
+
+            <app-error-state (retry)="getList()" *ngIf="tableError" class="image">
+            </app-error-state>
+
+            <table *ngIf="!(list.length === 0) && !tableError" matSort (matSortChange)="announceSortChange($event)"
+                class="full-width" mat-table [dataSource]="listData">
+                <ng-container matColumnDef=" " sticky >
+                    <th mat-header-cell *matHeaderCellDef > </th>
+                    <td mat-cell *matCellDef="let element">
+                        <img class="img" [src]="element.avatar_url" [alt]="element.login">
+                    </td>
+                </ng-container>
+                <ng-container  matColumnDef="username" divider = "border" sticky>
+                    <th mat-header-cell *matHeaderCellDef> Username </th>
+                    <td mat-cell *matCellDef="let element"> @{{element.login}} </td>
+                </ng-container>
+                <ng-container matColumnDef="contributions">
+                    <th mat-header-cell  mat-sort-header sortActionDescription="Sort by Contributions" *matHeaderCellDef> Contributions </th>
+                    <td mat-cell *matCellDef="let element"> {{element.contributions}} </td>
+                </ng-container>
+           
+                <ng-container  matColumnDef="followers">
+                    <th mat-header-cell  mat-sort-header sortActionDescription="Sort by Followers" *matHeaderCellDef> Total Followers </th>
+                    <td mat-cell *matCellDef="let element"> {{element.followers}} </td>
+                </ng-container>
+                <ng-container matColumnDef="public_repos">
+                    <th mat-header-cell  mat-sort-header sortActionDescription="Sort by Repos" *matHeaderCellDef> Total Public Repositories </th>
+                    <td mat-cell *matCellDef="let element"> {{element.public_repos}} </td>
+                </ng-container>
+                <ng-container  matColumnDef="public_gists">
+                    <th mat-header-cell  mat-sort-header sortActionDescription="Sort by Gists" *matHeaderCellDef> Total Public Gists </th>
+                    <td mat-cell *matCellDef="let element"> {{element.public_gists}} </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                <tr mat-row (click)="rowClicked(row.login)" *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+<mat-paginator [ngClass]="{'hideElement': list.length == 0 || loading }" #paginator [pageIndex]="0" [pageSize]="200"
+    [length]="count" [pageSizeOptions]="[100, 200, 500,1000]" showFirstLastButtons>
+</mat-paginator>

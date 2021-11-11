@@ -1,0 +1,94 @@
+<ng-template #loadingOrError>
+
+    <app-error-state  *ngIf="errorMessage" >
+    </app-error-state>
+
+    <app-page-loader *ngIf="!errorMessage">
+
+    </app-page-loader>
+</ng-template>
+
+
+<div class="root" *ngIf="selectedContributors$ | async as user; else loadingOrError">
+    <div class="header flex-el">
+        <button (click)="goBack()" matTooltip="go back" mat-icon-button><mat-icon>arrow_back</mat-icon></button>
+        <h2 class="page-title">
+            Contributor Details
+        </h2>
+    </div>
+    <div class="card">
+        <div class="card-item">
+
+            <img class="avatar" [src]="user.avatar_url" [alt]="user.login">
+
+            <h2 class="welcome">
+                {{user.login}}
+            </h2>
+            <p class="dets">
+                {{user.bio ? user.bio : "No bio available"}}
+            </p>
+        </div>
+        <div class="card-item">
+            <div class="flex-el">
+                <p class="label">name:</p>
+                <p class="dets">
+                    {{user.name ? user.name : "No name available"}}
+                </p>
+            </div>
+            <div class="flex-el">
+                <p class="label">Company:</p>
+                <p class="dets">
+                    {{user.company ? user.company : "No company available"}}
+                </p>
+            </div>
+            <div class="flex-el">
+                <p class="label">Email:</p>
+                <p class="dets">
+                    {{user.email ? user.email : "No email available"}}
+                </p>
+            </div>
+            <div class="flex-el">
+                <p class="label">Location:</p>
+                <p class="dets">
+                    {{user.location ? user.location : "No location available"}}
+                </p>
+            </div>
+            
+        </div>
+        <div class="card-item">
+            <div class="flex-el">
+                <p class="label">Public Repos:</p>
+                <p class="dets">
+                    {{user.public_repos ? user.public_repos : "No public repos available"}}
+                </p>
+            </div>
+            <div class="flex-el">
+                <p class="label">Public Gists:</p>
+                <p class="dets">
+                    {{user.public_gists ? user.public_gists : "No public gists available"}}
+                </p>
+            </div>
+            <div class="flex-el">
+                <p class="label">Followers:</p>
+                <p class="dets">
+                    {{user.followers ? user.followers : "No followers available"}}
+                </p>
+            </div>
+            <div class="flex-el">
+                <p class="label">Following:</p>
+                <p class="dets">
+                    {{user.following ? user.following : "No following available"}}
+                </p>
+            </div>
+            
+        </div>
+
+
+    </div>
+
+
+</div>
+
+<app-contributors-repos *ngIf="selectedContributors$ | async as user; else loadingOrError">
+    
+</app-contributors-repos>

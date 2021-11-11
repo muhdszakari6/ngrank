@@ -1,0 +1,30 @@
+@import "../../../../assets/scss/variables.scss";
+
+.root {
+    margin-top: 2rem;
+    background-color: #fff;
+    padding-top: 1rem;
+}
+
+.hideElement {
+    visibility: hidden;
+}
+table {
+    width: 100% !important;
+}
+
+.img {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    border: 1px solid $primary-color;
+    margin: 0.5rem;
+}
+td.mat-cell:first-of-type{
+    display: revert;
+}
+.welcome{
+    margin-left: 2.4rem;
+
+
+}

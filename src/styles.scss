@@ -1,0 +1,101 @@
+
+@import '~@angular/material/theming';
+@import './assets/scss/util.scss';
+@import './assets/scss/variables.scss';
+@import './assets/scss/mat-table.scss';
+@import './assets/scss/mixin.scss';
+
+
+
+
+$atlens-brand: (
+    50 : #ede7f6,
+    100 : #d1c4e9,
+    200 : #b39ddb,
+    300 : #9575cd,
+    400 : #7e58c2,
+    500 : #673ab7,
+    600 : #5f34b0,
+    700 : #542ca7,
+    800 : #4a259f,
+    900 : #391890,
+    A100 : #d4c7ff,
+    A200 : #ad94ff,
+    A400 : #8661ff,
+    A700 : #7347ff,
+  contrast: (
+    50: $dark-primary-text,
+    100: $dark-primary-text,
+    200: $dark-primary-text,
+    300: $dark-primary-text,
+    400: $dark-primary-text,
+    500: $light-primary-text,
+    600: $light-primary-text,
+    700: $light-primary-text,
+    800: $light-primary-text,
+    900: $light-primary-text,
+    A100: $dark-primary-text,
+    A200: $light-primary-text,
+    A400: $light-primary-text,
+    A700: $light-primary-text
+  ),
+);
+
+
+$atlens-accent: (
+    50 : #f6efff,
+    100 : #e8d6ff,
+    200 : #d9bbff,
+    300 : #c99ffe,
+    400 : #be8bfe,
+    500 : #b276fe,
+    600 : #ab6efe,
+    700 : #a263fe,
+    800 : #9959fe,
+    900 : #8a46fd,
+    A100 : #ffffff,
+    A200 : #ffffff,
+    A400 : #f2ebff,
+    A700 : #e2d2ff,    // #779a1e,
+    contrast: (
+        50: white,
+        100: $black-87-opacity,
+        200: $black-87-opacity,
+        300: $black-87-opacity,
+        400: $black-87-opacity,
+        500: white,
+        600: white,
+        700: white,
+        800: white,
+        900: white,
+        A100: $black-87-opacity,
+        A200: $black-87-opacity,
+        A400: $black-87-opacity,
+        A700: white,)
+);
+
+@include mat-core();
+
+
+$atlens-primary: mat-palette($atlens-brand);
+$atlens-accent: mat-palette($atlens-accent, A400);
+
+body{
+    padding: 0;
+    margin: 0;
+}
+
+$atlens-warn: mat-palette($mat-red);
+
+$atlens-theme: mat-light-theme($atlens-primary, $atlens-accent, $atlens-warn);
+
+@include angular-material-theme($atlens-theme);
+
+$primary: map-get($atlens-theme, primary);
+$secondary: map-get($atlens-theme, accent);
+$white: map-get($atlens-theme, white);
+$warn: map-get($atlens-theme, warn);
+
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
