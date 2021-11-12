@@ -97,11 +97,15 @@ td.mat-cell:first-of-type {
 .global_search {
     width: 100%;
     display: flex;
-    justify-content: center;
+    // justify-content: center;
+    margin-left: 3rem;
+    margin-top: 0.4rem;
+    margin-bottom: 0.4rem;
+
     mat-form-field {
         // width: 25%;
         font-size: 13px;
-        width: 70%;
+        width: 95%;
     }
 
     .mat-form-field-wrapper {

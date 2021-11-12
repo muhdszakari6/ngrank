@@ -14,12 +14,13 @@ import { UsersWithContributions } from 'src/model/github.model';
   templateUrl: './contributors-list.component.html',
   styleUrls: ['./contributors-list.component.scss']
 })
-export class ContributorsListComponent implements OnInit , OnDestroy{
+export class ContributorsListComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = [" ", 'username', 'contributions', 'followers', 'public_repos', 'public_gists'];
   loading: boolean = true
   tableError: boolean = false
-  innerHeight = window.innerHeight - 260
+  innerHeight = window.innerHeight - 310
   users: Set<number> = new Set();
+  miniLoading: boolean = false
 
 
   @ViewChild(MatPaginator)
@@ -37,7 +38,7 @@ export class ContributorsListComponent implements OnInit , OnDestroy{
 
   constructor(
     private githubService: ApiGithubService,
-    private _liveAnnouncer: LiveAnnouncer, 
+    private _liveAnnouncer: LiveAnnouncer,
     private router: Router
   ) { }
 
@@ -47,7 +48,8 @@ export class ContributorsListComponent implements OnInit , OnDestroy{
 
   getList() {
     this.loading = true
-    this.githubSub = this.githubService.users$.pipe(
+    this.miniLoading = true
+    this.githubSub = this.githubService.finalUsers$.pipe(
       take(30),
       catchError((err) => {
         //Catches and handle error state
@@ -60,37 +62,21 @@ export class ContributorsListComponent implements OnInit , OnDestroy{
       }),
     ).subscribe(
       res => {
-        this.list.push(res)
+        this.list = res
         this.loading = false
         this.tableError = false
-        this.list.forEach(
-          (el: UsersWithContributions) => {
-            const duplicate = this.users.has(el.id);
-            this.users.add(el.id);
-            !duplicate ? this.filteredList.push(el) : null;
-          })
-
-        this.filteredList = this.filteredList.map((filteredContributor: UsersWithContributions) => {
-          let duplicates = this.list.filter(
-            (unfilteredContributor: UsersWithContributions) => filteredContributor.id === unfilteredContributor.id
-          )
-          let contributions = 0
-          duplicates.forEach((duplicate: UsersWithContributions) => {
-            contributions += duplicate.contributions;
-          });
-          return { ...filteredContributor, contributions }
-
-        });
-
-     
-        this.count = this.filteredList.length
-        this.listData = new MatTableDataSource(this.filteredList)
+        this.count = this.list.length
+        this.listData = new MatTableDataSource(this.list)
         this.listData.paginator = this.paginator
         this.listData.sort = this.sort
       }, err => {
         this.loading = false
         this.tableError = true
       },
+      () => {
+        this.miniLoading = false
+
+      }
     )
   }
   announceSortChange(sortState: Sort) {
@@ -109,12 +95,12 @@ export class ContributorsListComponent implements OnInit , OnDestroy{
     this.listData.filter = filterValue;
   }
 
-  rowClicked(username: string){
+  rowClicked(username: string) {
     this.router.navigate([`user/${username}`])
   }
 
   ngOnDestroy(): void {
-    this.githubSub ? this.githubSub.unsubscribe() : null; 
+    this.githubSub ? this.githubSub.unsubscribe() : null;
     console.log(this.githubSub?.closed)
   }
 

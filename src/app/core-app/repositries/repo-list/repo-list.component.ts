@@ -18,6 +18,8 @@ export class RepoListComponent implements OnInit {
 
   displayedColumns: string[] = [" ", 'username', 'contributions'];
   loading: boolean = true
+  miniLoading: boolean = true
+
   tableError: boolean = false
   repos: Set<string> = new Set();
   innerHeight = window.innerHeight - 160
@@ -57,6 +59,7 @@ export class RepoListComponent implements OnInit {
 
   getList() {
     this.loading = true
+    this.miniLoading = true
     this.githubSub = this.githubService.repoContributorsPaginated$.pipe(
       catchError((err) => {
         this.loading = false
@@ -80,6 +83,9 @@ export class RepoListComponent implements OnInit {
         this.loading = false
         this.tableError = true
       },
+      () => {
+        this.miniLoading = false 
+      }
     )
   }
  

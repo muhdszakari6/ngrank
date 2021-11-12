@@ -30,7 +30,7 @@ import { MobileNavComponent } from './base/mobile-nav/mobile-nav.component';
     RepositriesComponent,
     RepoDetailsComponent,
     RepoListComponent,
-    MobileNavComponent, 
+    MobileNavComponent,
     
 
   ],

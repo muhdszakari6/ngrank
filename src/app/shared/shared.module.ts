@@ -7,13 +7,14 @@ import { materials } from './angular-material/material-module';
 import { PageLoaderComponent } from './page-loader/page-loader.component';
 import { EmptyStateComponent } from './empty-state/empty-state.component';
 import { ErrorStateComponent } from './error-state/error-state.component';
+import { MiniLoaderComponent } from './mini-loader/mini-loader.component';
 
 
 
 @NgModule({
   declarations: [
 
-    PageLoaderComponent, EmptyStateComponent, ErrorStateComponent
+    PageLoaderComponent, EmptyStateComponent, ErrorStateComponent, MiniLoaderComponent
   ],
 
   imports: [
@@ -37,7 +38,7 @@ import { ErrorStateComponent } from './error-state/error-state.component';
     ReactiveFormsModule,
     PageLoaderComponent,
     HttpClientModule,
-    EmptyStateComponent, ErrorStateComponent, 
+    EmptyStateComponent, ErrorStateComponent, MiniLoaderComponent,
     ...materials
 
   ],

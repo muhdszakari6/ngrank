@@ -22,6 +22,7 @@ export class ContributorsReposComponent implements OnInit {
   tableError: boolean = false
   repos: Set<string> = new Set();
   innerHeight = window.innerHeight - 160
+  miniLoading: boolean = false
 
   errorMessage = null
 
@@ -55,6 +56,7 @@ export class ContributorsReposComponent implements OnInit {
   }
 
   getList() {
+    this.miniLoading =  true
     this.loading = true
     this.githubSub = this.githubService.contributorsNgRepos$.pipe(
       catchError((err) => {
@@ -87,6 +89,9 @@ export class ContributorsReposComponent implements OnInit {
         this.loading = false
         this.tableError = true
       },
+      ()=>{
+        this.miniLoading = false 
+      }
     )
   }
  

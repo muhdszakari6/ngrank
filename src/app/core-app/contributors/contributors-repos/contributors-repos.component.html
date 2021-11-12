@@ -10,6 +10,15 @@
    
     <div class="flex-vertical">
 
+       
+        <div *ngIf="!miniLoading" class="global_search">
+            <mat-form-field appearance="outline" ngDefaultControl>
+                <mat-icon matPrefix class="search-icon">search</mat-icon>
+                <input #input (keyup)="applyFilter(input.value)" type="text" matInput name="search"
+                    placeholder="Search">
+            </mat-form-field>
+        </div>
+
         <div class="custom-scroll-bar" [style.height.px]="innerHeight">
 
 

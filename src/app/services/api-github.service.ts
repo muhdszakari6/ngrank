@@ -11,10 +11,16 @@ import { AllRepos, ContributorData, Users, UsersWithContributions } from 'src/mo
 })
 export class ApiGithubService {
 
+  users: Set<number> = new Set();
+  contributorsList: Array<UsersWithContributions> = []
+
   private baseUrl: string = APICONSTANTS.base;
   private reposUrl: string = APICONSTANTS.reposUrl;
   private contributorSelectedSubject = new BehaviorSubject<string>('')
   private contributorSelectedAction$ = this.contributorSelectedSubject.asObservable()
+  
+  private contributorListSubject = new BehaviorSubject<Array<UsersWithContributions>>([])
+  private contributorListAction$ = this.contributorListSubject.asObservable()
 
 
   private repoSelectedSubject = new BehaviorSubject<string>('')
@@ -54,7 +60,7 @@ export class ApiGithubService {
       mergeMap((repos: AllRepos[]) => {
         let repos_fullname = repos.map((repo: AllRepos) => (repo?.full_name))
         return from(repos_fullname).pipe(
-          
+
           mergeMap(
             (repo_fullname: string) => this.http.get<any>(`${this.baseUrl}/repos/${repo_fullname}/contributors?&per_page=${APICONSTANTS.pageSize}`, { observe: 'response' }).pipe(
               map((res) => {
@@ -78,6 +84,7 @@ export class ApiGithubService {
 
   contributorsPaginated$ = this.contributors$
     .pipe(
+      // take(3),
       concatMap(
         (response) => {
           let requestUrl = response.url
@@ -119,28 +126,51 @@ export class ApiGithubService {
 
     )
 
+
   users$ = this.contributorsPaginated$.pipe(
     mergeMap(
       (contributors) => {
 
         let reducedContributors = contributors.body != null ? contributors.body : []
         return from([...reducedContributors]).pipe(
+
+          filter((contributor) => {
+            let newContributorIndex = this.contributorsList.findIndex(item => contributor.id === item.id)
+            
+
+            if(newContributorIndex != -1){
+              let newContributor = {...this.contributorsList[newContributorIndex], 
+                contributions: this.contributorsList[newContributorIndex].contributions + contributor.contributions
+               } 
+              this.contributorsList.splice(newContributorIndex, 1 , newContributor)
+              return false
+            }
+
+            return true
+          }),
+
           mergeMap((filteredContributors: ContributorData) => {
             return this.http.get<Users>(`${this.baseUrl}/users/${filteredContributors.login}`).pipe(
 
               map((item: Users) => {
+                this.contributorsList.push({ ...item, contributions: filteredContributors.contributions })
                 return { ...item, contributions: filteredContributors.contributions }
               }),
               catchError((err) => {
                 return this.errorHandler(err)
               })
             )
+            
           })
         )
       }
     ),
     shareReplay()
 
+  )
+
+  finalUsers$ = this.users$.pipe(
+    map(item => this.contributorsList)
   )
 
 
@@ -203,7 +233,6 @@ export class ApiGithubService {
   repoContributorsPaginated$ = this.repoContributors$.pipe(
     concatMap(
       (response) => {
-        console.log("BODY", response.body)
         let requestUrl = response.url
         let array: Array<number> = []
         if (response.headers.get('link') === null) {
@@ -260,7 +289,7 @@ export class ApiGithubService {
 
 
 
-  selectedRepo$ =  this.repos$.pipe(
+  selectedRepo$ = this.repos$.pipe(
     withLatestFrom(this.repoSelectedAction$),
     filter((([repos, selectedRepo]) => {
       return repos.find((item: AllRepos) => item.name === selectedRepo) != null
