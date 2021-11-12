@@ -41,6 +41,7 @@ tr.mat-row:nth-child(even) {
 }
 
 td.mat-cell {
+    min-height: 32px !important;
     font-size: 11px !important;
     @include respond(tab-port) {
        padding: 0 0.6rem !important;
@@ -71,9 +72,10 @@ tr.mat-header-row {
 }
 td.mat-cell:first-of-type {
     display: flex;
+    align-items: center;
 }
 
-.mat-table-sticky:nth-child(2) {
+.mat-table-sticky:first-child {
     @include respond(tab-port) {
         border-right: 1px solid #e0e0e0;
     }
