@@ -31,7 +31,7 @@ export class ApiGithubService {
           let pageNumber = response.headers.get('link')!.split('=')[5]?.substring(0, 1)
           let array = Array.from(Array(+pageNumber).keys())
           return from(array).pipe(
-            mergeMap(
+            concatMap(
               (page: number) => {
                 return this.http.get<AllRepos[]>(`${this.baseUrl}${this.reposUrl}?page=${page + 1}&per_page=${APICONSTANTS.pageSize}`).pipe(
                   catchError((err) => {
@@ -77,7 +77,7 @@ export class ApiGithubService {
 
   contributorsPaginated$ = this.contributors$
     .pipe(
-      mergeMap(
+      concatMap(
         (response) => {
           let requestUrl = response.url
           let array: Array<number> = []
@@ -95,7 +95,7 @@ export class ApiGithubService {
 
 
           return from(array).pipe(
-            mergeMap(
+            concatMap(
               (page: number) => {
 
                 return this.http.get<any>(`${requestUrl}&page=${page}`, { observe: 'response' }).pipe(
@@ -200,7 +200,7 @@ export class ApiGithubService {
   )
 
   repoContributorsPaginated$ = this.repoContributors$.pipe(
-    mergeMap(
+    concatMap(
       (response) => {
         let requestUrl = response.url
         let array: Array<number> = []
@@ -218,7 +218,7 @@ export class ApiGithubService {
 
 
         return from(array).pipe(
-          mergeMap(
+          concatMap(
             (page) => {
 
               return this.http.get<ContributorData[]>(`${requestUrl}&page=${page}`).pipe(
