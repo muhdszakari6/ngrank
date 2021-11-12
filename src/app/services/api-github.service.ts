@@ -44,7 +44,8 @@ export class ApiGithubService {
 
           )
         }
-      )
+      ),
+      shareReplay()
     )
 
 
@@ -257,9 +258,8 @@ export class ApiGithubService {
 
 
 
-  selectedRepo$ = combineLatest(
-    [this.repos$, this.repoSelectedAction$]
-  ).pipe(
+  selectedRepo$ =  this.repos$.pipe(
+    withLatestFrom(this.repoSelectedAction$),
     filter((([repos, selectedRepo]) => {
       return repos.find((item: AllRepos) => item.name === selectedRepo) != null
     })),
