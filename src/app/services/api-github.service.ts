@@ -99,7 +99,7 @@ export class ApiGithubService {
             concatMap(
               (page: number) => {
 
-                return this.http.get<any>(`${requestUrl}&page=${page}`, { observe: 'response' }).pipe(
+                return this.http.get<any>(`${requestUrl}&page=${page + 1}`, { observe: 'response' }).pipe(
                   catchError((err) => {
                     return this.errorHandler(err)
                   })
@@ -203,6 +203,7 @@ export class ApiGithubService {
   repoContributorsPaginated$ = this.repoContributors$.pipe(
     concatMap(
       (response) => {
+        console.log("BODY", response.body)
         let requestUrl = response.url
         let array: Array<number> = []
         if (response.headers.get('link') === null) {
@@ -211,6 +212,7 @@ export class ApiGithubService {
           array = Array.from(Array(+pageNumber).keys())
 
         } else {
+
           let pageNumber = response.headers.get('link')!.split('=')[5]?.substring(0, 1)
 
           array = Array.from(Array(+pageNumber).keys())
@@ -222,7 +224,7 @@ export class ApiGithubService {
           concatMap(
             (page) => {
 
-              return this.http.get<ContributorData[]>(`${requestUrl}&page=${page}`).pipe(
+              return this.http.get<ContributorData[]>(`${requestUrl}&page=${page + 1}`).pipe(
                 catchError((err) => {
                   return this.errorHandler(err)
                 })
