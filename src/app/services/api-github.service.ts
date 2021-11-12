@@ -18,7 +18,7 @@ export class ApiGithubService {
   private reposUrl: string = APICONSTANTS.reposUrl;
   private contributorSelectedSubject = new BehaviorSubject<string>('')
   private contributorSelectedAction$ = this.contributorSelectedSubject.asObservable()
-  
+
   private contributorListSubject = new BehaviorSubject<Array<UsersWithContributions>>([])
   private contributorListAction$ = this.contributorListSubject.asObservable()
 
@@ -128,21 +128,25 @@ export class ApiGithubService {
 
 
   users$ = this.contributorsPaginated$.pipe(
-    mergeMap(
+    concatMap(
       (contributors) => {
 
         let reducedContributors = contributors.body != null ? contributors.body : []
         return from([...reducedContributors]).pipe(
 
           filter((contributor) => {
-            let newContributorIndex = this.contributorsList.findIndex(item => contributor.id === item.id)
-            
+            let newContributorIndex = this.contributorsList.findIndex(item => {   
+              return contributor.login === item.login
+            })
 
-            if(newContributorIndex != -1){
-              let newContributor = {...this.contributorsList[newContributorIndex], 
+            if (newContributorIndex != -1) {
+              let newContributor = {
+                ...this.contributorsList[newContributorIndex],
                 contributions: this.contributorsList[newContributorIndex].contributions + contributor.contributions
-               } 
-              this.contributorsList.splice(newContributorIndex, 1 , newContributor)
+              }
+
+              this.contributorsList.splice(newContributorIndex, 1, newContributor)
+
               return false
             }
 
@@ -150,6 +154,8 @@ export class ApiGithubService {
           }),
 
           mergeMap((filteredContributors: ContributorData) => {
+
+
             return this.http.get<Users>(`${this.baseUrl}/users/${filteredContributors.login}`).pipe(
 
               map((item: Users) => {
@@ -160,17 +166,19 @@ export class ApiGithubService {
                 return this.errorHandler(err)
               })
             )
-            
+
           })
         )
       }
     ),
-    shareReplay()
+    shareReplay(1)
 
   )
 
   finalUsers$ = this.users$.pipe(
-    map(item => this.contributorsList)
+    map(item => {
+      return this.contributorsList
+    })
   )
 
 

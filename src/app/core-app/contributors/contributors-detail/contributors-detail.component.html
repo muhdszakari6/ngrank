@@ -1,6 +1,6 @@
 <ng-template #loadingOrError>
 
-    <app-error-state  *ngIf="errorMessage" >
+    <app-error-state *ngIf="errorMessage">
     </app-error-state>
 
     <app-page-loader *ngIf="!errorMessage">
@@ -11,7 +11,9 @@
 
 <div class="root" *ngIf="selectedContributors$ | async as user; else loadingOrError">
     <div class="header flex-el">
-        <button (click)="goBack()" matTooltip="go back" mat-icon-button><mat-icon>arrow_back</mat-icon></button>
+        <button (click)="goBack()" matTooltip="go back" mat-icon-button>
+            <mat-icon>arrow_back</mat-icon>
+        </button>
         <h2 class="page-title">
             Contributor Details
         </h2>
@@ -20,6 +22,16 @@
         <div class="card-item">
 
             <img class="avatar" [src]="user.avatar_url" [alt]="user.login">
+            <div class="flex-el">
+                <a target="_blank" [href]="user.blog">
+                    <img class="media" src="../../../../assets/svgs/earth.svg" [alt]="user.login">
+                </a>
+                <a target="_blank" [href]="'https://twitter.com/easybuoy'+user.twitter_username">
+                    <img class="media" src="../../../../assets/svgs/twitter.svg" [alt]="user.login">
+                </a>
+            </div>
+           
+
 
             <h2 class="welcome">
                 {{user.login}}
@@ -53,7 +65,7 @@
                     {{user.location ? user.location : "No location available"}}
                 </p>
             </div>
-            
+
         </div>
         <div class="card-item">
             <div class="flex-el">
@@ -80,7 +92,7 @@
                     {{user.following ? user.following : "No following available"}}
                 </p>
             </div>
-            
+
         </div>
 
 
@@ -90,5 +102,5 @@
 </div>
 
 <app-contributors-repos *ngIf="selectedContributors$ | async as user; else loadingOrError">
-    
+
 </app-contributors-repos>
