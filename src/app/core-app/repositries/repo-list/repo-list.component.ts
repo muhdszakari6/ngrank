@@ -69,11 +69,10 @@ export class RepoListComponent implements OnInit {
       }),
     ).subscribe(
       res => {
-        let repoUrl = res
-        console.log(res)
         this.list.push(res)
         this.filteredList = this.list.reduce((acc, curr) => acc.concat(curr), [])
         this.loading = false
+        this.miniLoading = false 
         this.tableError = false
         this.count = this.filteredList.length
         this.listData = new MatTableDataSource(this.filteredList)
@@ -82,10 +81,10 @@ export class RepoListComponent implements OnInit {
       }, err => {
         this.loading = false
         this.tableError = true
-      },
-      () => {
         this.miniLoading = false 
-      }
+
+      },
+     
     )
   }
  

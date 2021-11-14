@@ -1,8 +1,7 @@
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpResponse } from "@angular/common/http";
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { map } from "rxjs/operators";
-import { APICONSTANTS } from "../services/consts/APICONSTANTS";
+import { APICONSTANTS } from "../shared/consts/APICONSTANTS";
 
 
 @Injectable()

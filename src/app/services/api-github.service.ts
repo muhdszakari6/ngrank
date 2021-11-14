@@ -1,8 +1,8 @@
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient,  } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, combineLatest, EMPTY, forkJoin, from, merge, Observable, throwError } from 'rxjs';
-import { APICONSTANTS } from './consts/APICONSTANTS';
-import { catchError, concatMap, exhaustMap, filter, map, mergeMap, scan, share, shareReplay, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
+import { BehaviorSubject,  from,  Observable, throwError } from 'rxjs';
+import { APICONSTANTS } from '../shared/consts/APICONSTANTS';
+import { catchError, concatMap,  filter, map, mergeMap, shareReplay, switchMap, withLatestFrom } from 'rxjs/operators';
 import { AllRepos, ContributorData, Users, UsersWithContributions } from 'src/model/github.model';
 
 
@@ -11,17 +11,13 @@ import { AllRepos, ContributorData, Users, UsersWithContributions } from 'src/mo
 })
 export class ApiGithubService {
 
-  users: Set<number> = new Set();
   contributorsList: Array<UsersWithContributions> = []
 
   private baseUrl: string = APICONSTANTS.base;
   private reposUrl: string = APICONSTANTS.reposUrl;
+
   private contributorSelectedSubject = new BehaviorSubject<string>('')
   private contributorSelectedAction$ = this.contributorSelectedSubject.asObservable()
-
-  private contributorListSubject = new BehaviorSubject<Array<UsersWithContributions>>([])
-  private contributorListAction$ = this.contributorListSubject.asObservable()
-
 
   private repoSelectedSubject = new BehaviorSubject<string>('')
   repoSelectedAction$ = this.repoSelectedSubject.asObservable()
@@ -76,7 +72,6 @@ export class ApiGithubService {
 
         )
       }),
-      // shareReplay(),
       catchError(err => this.errorHandler(err)),
 
     )
@@ -84,7 +79,6 @@ export class ApiGithubService {
 
   contributorsPaginated$ = this.contributors$
     .pipe(
-      // take(3),
       concatMap(
         (response) => {
           let requestUrl = response.url
@@ -176,7 +170,7 @@ export class ApiGithubService {
   )
 
   finalUsers$ = this.users$.pipe(
-    map(item => {
+    map(_ => {
       return this.contributorsList
     })
   )
@@ -197,29 +191,16 @@ export class ApiGithubService {
 
   )
 
-  userRepos$ = this.contributorSelectedAction$.pipe(
-    switchMap(
-      (name: string) => {
-        return this.http.get<any>(
-          `${this.baseUrl}/users/${name}/repos`)
-          .pipe(
-
-            catchError(err => this.errorHandler(err))
-          )
-      }
-    )
-
-  )
 
 
   contributorsNgRepos$ = this.contributorsPaginated$.pipe(
     withLatestFrom(this.contributorSelectedAction$),
-    filter((([contributorWithRepo, selectedContributors]) => {
-      let body = contributorWithRepo.body
+    filter((([contributors, selectedContributors]) => {
+      let body = contributors.body
       return body?.find((item: ContributorData) => selectedContributors === item.login)
     })),
-    map((([response, contributor]) => {
-      return response.url?.split('/')[4] + "/" + response.url?.split('/')[5]
+    map((([response, _]) => {
+      return response.url?.split('/')[APICONSTANTS.baseNameIndex] + "/" + response.url?.split('/')[APICONSTANTS.repoNameIndex]
     })),
   )
 
@@ -254,7 +235,7 @@ export class ApiGithubService {
 
           array = Array.from(Array(+pageNumber).keys())
 
-        }
+        }  
 
 
         return from(array).pipe(
@@ -274,26 +255,6 @@ export class ApiGithubService {
       }
     ),
   )
-
-  // repoContributorsUsers$ = this.repoContributorsPaginated$.pipe(
-  //   mergeMap(
-  //     (contributors) => {
-  //       let reducedContributors = contributors.body != null ? contributors.body : []
-  //       return from([...reducedContributors]).pipe(
-  //         mergeMap((filteredContributors) => {
-  //           return this.http.get<any>(`${this.baseUrl}/users/${filteredContributors.login}`).pipe(
-  //             map((item: any) => {
-  //               return { ...item }
-  //             }),
-  //             catchError((err) => {
-  //               return this.errorHandler(err)
-  //             })
-  //           )
-  //         })
-  //       )
-  //     }
-  //   ),
-  // )
 
 
 

@@ -1,4 +1,9 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterTestingModule } from '@angular/router/testing';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { ContributorsListComponent } from './contributors-list/contributors-list.component';
 
 import { ContributorsComponent } from './contributors.component';
 
@@ -8,7 +13,17 @@ describe('ContributorsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ContributorsComponent ]
+      imports: [
+        HttpClientTestingModule, 
+        RouterTestingModule,
+        SharedModule,
+        BrowserAnimationsModule
+
+      ],
+      declarations: [ 
+        ContributorsComponent, 
+        ContributorsListComponent,
+       ]
     })
     .compileComponents();
   });

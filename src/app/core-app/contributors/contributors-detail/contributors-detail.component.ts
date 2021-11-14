@@ -1,8 +1,8 @@
 import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { EMPTY } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { EMPTY, Subscription } from 'rxjs';
+import { catchError,  } from 'rxjs/operators';
 import { ApiGithubService } from 'src/app/services/api-github.service';
 
 @Component({
@@ -10,8 +10,9 @@ import { ApiGithubService } from 'src/app/services/api-github.service';
   templateUrl: './contributors-detail.component.html',
   styleUrls: ['./contributors-detail.component.scss']
 })
-export class ContributorsDetailComponent implements OnInit {
+export class ContributorsDetailComponent implements OnInit, OnDestroy{
   errorMessage: string | null = null;
+  routerSub: Subscription;
 
   selectedContributors$ = this.githubService.userDetails$
     .pipe(
@@ -26,7 +27,7 @@ export class ContributorsDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private location: Location
   ) {
-    this.route.params.subscribe(
+    this.routerSub = this.route.params.subscribe(
       res => {
         this.githubService.selectContributor(res.username)
       }
@@ -37,6 +38,11 @@ export class ContributorsDetailComponent implements OnInit {
 
   ngOnInit(): void {
 
+  }
+
+  ngOnDestroy(): void {
+  
+    this.routerSub.unsubscribe()
   }
 
   goBack(){

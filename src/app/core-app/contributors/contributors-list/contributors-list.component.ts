@@ -1,5 +1,5 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -52,9 +52,7 @@ export class ContributorsListComponent implements OnInit, OnDestroy {
     this.githubSub = this.githubService.finalUsers$.pipe(
       // take(30),
       catchError((err) => {
-        //Catches and handle error state
-        //Still allows observable stream to continue emitting
-        //So error state might be recovered
+        
         this.loading = false
         this.tableError = true
         return EMPTY
@@ -80,7 +78,6 @@ export class ContributorsListComponent implements OnInit, OnDestroy {
     )
   }
   announceSortChange(sortState: Sort) {
-    console.log(sortState)
     if (sortState.direction) {
       this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
     } else {
@@ -101,7 +98,6 @@ export class ContributorsListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.githubSub ? this.githubSub.unsubscribe() : null;
-    console.log(this.githubSub?.closed)
   }
 
 

@@ -1,8 +1,7 @@
 import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { EMPTY } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 import { ApiGithubService } from 'src/app/services/api-github.service';
 
 @Component({
@@ -10,10 +9,12 @@ import { ApiGithubService } from 'src/app/services/api-github.service';
   templateUrl: './repositries.component.html',
   styleUrls: ['./repositries.component.scss']
 })
-export class RepositriesComponent implements OnInit {
+export class RepositriesComponent implements OnInit, OnDestroy {
   errorMessage: string | null = null;
 
   selectedRepo$ = this.githubService.selectedRepo$
+  routerSub: Subscription;
+
 
   constructor(
     private githubService: ApiGithubService,
@@ -21,9 +22,8 @@ export class RepositriesComponent implements OnInit {
     private location: Location
 
   ) {
-    this.route.params.subscribe(
+    this.routerSub = this.route.params.subscribe(
       res => {
-        console.log(res)
         this.githubService.selectRepo(res.repo)
       }
     )
@@ -34,8 +34,11 @@ export class RepositriesComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  
-  goBack(){
+  ngOnDestroy(): void {
+    this.routerSub.unsubscribe()
+  }
+
+  goBack() {
     this.location.back()
   }
 

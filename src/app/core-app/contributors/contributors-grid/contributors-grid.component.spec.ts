@@ -22,4 +22,5 @@ describe('ContributorsGridComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  
 });
