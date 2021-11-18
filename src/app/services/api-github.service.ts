@@ -5,6 +5,7 @@ import { APICONSTANTS } from '../shared/consts/APICONSTANTS';
 import { catchError, concatMap,  filter, map, mergeMap, shareReplay, switchMap, withLatestFrom } from 'rxjs/operators';
 import { AllRepos, ContributorData, Users, UsersWithContributions } from 'src/model/github.model';
 
+//CHECK REACT VERSION FOR THE ARRANGED VERSION.
 
 @Injectable({
   providedIn: 'root'
@@ -282,11 +283,8 @@ export class ApiGithubService {
   private errorHandler(err: any): Observable<never> {
     let errorMessage: string;
     if (err.error instanceof ErrorEvent) {
-      // A client-side or network error occurred. Handle it accordingly.
       errorMessage = `An error occurred: ${err.error?.message}`;
     } else {
-      // The backend returned an unsuccessful response code.
-      // The response body may contain clues as to what went wrong,
       errorMessage = `Backend returned code ${err.status}: ${err.body?.error}`;
     }
     console.error(err);
