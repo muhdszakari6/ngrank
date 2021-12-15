@@ -1,5 +1,5 @@
 export const APICONSTANTS = {
-    Token : "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",
+    Token : "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",
     FToken: "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",
     organization: "Angular",
     pageSize: 100,
