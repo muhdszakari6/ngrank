@@ -18,7 +18,7 @@ export class ContributorsListComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = [" ", 'username', 'contributions', 'followers', 'public_repos', 'public_gists'];
   loading: boolean = true
   tableError: boolean = false
-  innerHeight = window.innerHeight - 310
+  innerHeight = window.innerHeight - 300
   users: Set<number> = new Set();
   miniLoading: boolean = false
 
