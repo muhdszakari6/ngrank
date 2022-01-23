@@ -18,14 +18,14 @@ const routes: Routes = [
       {
         path: 'user/:username',
         component: ContributorsDetailComponent,
-      }, 
+      },
       {
         path: 'repo/:repo',
         component: RepositriesComponent,
       }
     ]
-  }, 
-  
+  },
+
 ];
 
 @NgModule({

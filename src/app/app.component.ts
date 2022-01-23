@@ -1,6 +1,8 @@
 import { Component, OnDestroy } from '@angular/core';
-import { RouteConfigLoadEnd, RouteConfigLoadStart, Router,Event, RouterEvent } from '@angular/router';
+import { RouteConfigLoadEnd, RouteConfigLoadStart, Router, Event, RouterEvent, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
+
+
 
 @Component({
   selector: 'app-root',
@@ -8,21 +10,21 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnDestroy {
-  loading: boolean; 
+  loading: boolean;
   title = 'Angularank';
   loaderSubscription: Subscription
 
   constructor(
     private router: Router
-  ){
+  ) {
     this.loading = false
-    
+
     this.loaderSubscription = router.events.subscribe(
       (event: Event) => {
-        if(event instanceof RouteConfigLoadStart){
+        if (event instanceof RouteConfigLoadStart) {
           this.loading = true
-        } else if(event instanceof RouteConfigLoadEnd){
-          this.loading = false 
+        } else if (event instanceof RouteConfigLoadEnd) {
+          this.loading = false
         }
       }
     )
@@ -31,4 +33,6 @@ export class AppComponent implements OnDestroy {
   ngOnDestroy(): void {
     this.loaderSubscription.unsubscribe();
   }
+
+
 }
