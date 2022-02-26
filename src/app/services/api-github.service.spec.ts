@@ -35,6 +35,7 @@ describe('ApiGithubService', () => {
 
       service.repos$.subscribe(
         (_) => {
+
         }
       )
 
@@ -269,9 +270,5 @@ describe('ApiGithubService', () => {
 
     });
   });
-
-
-
-
 
 });

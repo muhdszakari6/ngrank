@@ -22,8 +22,8 @@
       <app-error-state (retry)="getList()" *ngIf="tableError" class="image">
       </app-error-state>
 
-      <table *ngIf="!(list.length === 0) && !tableError" matSort (matSortChange)="announceSortChange($event)"
-        class="full-width" mat-table [dataSource]="listData">
+      <table *ngIf="!(list.length === 0) && !tableError" (matSortChange)="announceSortChange($event)" class="full-width"
+        mat-table [dataSource]="listData" matSort>
 
         <ng-container matColumnDef=" " sticky>
           <th mat-header-cell *matHeaderCellDef> </th>

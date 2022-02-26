@@ -96,11 +96,9 @@ $warn: map-get($atlens-theme, warn);
 html,
 body {
   height: 100%;
+  scroll-behavior: smooth;
 }
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-}
-.module {
-  scroll-behavior: smooth;
 }
