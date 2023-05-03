@@ -1,8 +1,8 @@
-import { HttpClient,  } from '@angular/common/http';
+import { HttpClient, } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject,  from,  Observable, throwError } from 'rxjs';
+import { BehaviorSubject, from, Observable, throwError } from 'rxjs';
 import { APICONSTANTS } from '../shared/consts/APICONSTANTS';
-import { catchError, concatMap,  filter, map, mergeMap, shareReplay, switchMap, withLatestFrom } from 'rxjs/operators';
+import { catchError, concatMap, filter, map, mergeMap, shareReplay, switchMap, withLatestFrom } from 'rxjs/operators';
 import { AllRepos, ContributorData, Users, UsersWithContributions } from 'src/model/github.model';
 
 //CHECK REACT VERSION FOR THE ARRANGED VERSION.
@@ -11,7 +11,6 @@ import { AllRepos, ContributorData, Users, UsersWithContributions } from 'src/mo
   providedIn: 'root'
 })
 export class ApiGithubService {
-
   contributorsList: Array<UsersWithContributions> = []
 
   private baseUrl: string = APICONSTANTS.base;
@@ -130,7 +129,7 @@ export class ApiGithubService {
         return from([...reducedContributors]).pipe(
 
           filter((contributor) => {
-            let newContributorIndex = this.contributorsList.findIndex(item => {   
+            let newContributorIndex = this.contributorsList.findIndex(item => {
               return contributor.login === item.login
             })
 
@@ -236,7 +235,7 @@ export class ApiGithubService {
 
           array = Array.from(Array(+pageNumber).keys())
 
-        }  
+        }
 
 
         return from(array).pipe(

@@ -7,6 +7,9 @@
 # Only exists if Bazel was run
 /bazel-out
 /output
+.env
+.env.*
+
 
 # dependencies
 /node_modules
@@ -22,7 +25,6 @@ chrome-profiler-events*.json
 *.launch
 .settings/
 *.sublime-workspace
-
 # IDE - VSCode
 .vscode/*
 !.vscode/settings.json
