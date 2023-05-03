@@ -9,5 +9,3 @@ module.exports = {
     ]),
   ],
 };
-
-//NB: Using dotenv is an overkill
